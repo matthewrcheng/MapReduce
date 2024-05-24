@@ -6,7 +6,7 @@ import (
 )
 
 func TestGenericSlice(t *testing.T) {
-	items := []interface{}{1, 2, 3, 4, 5}
+	items := []interface{}{5, 2, 4, 1, 3}
 
 	gs := CreateGenericSlice(items)
 
@@ -14,7 +14,7 @@ func TestGenericSlice(t *testing.T) {
 	mapped := gs.Map(func(i interface{}) interface{} {
 		return i.(int) * 2
 	})
-	fmt.Println("Mapped:", mapped.Items()) // Output: [2 4 6 8 10]
+	fmt.Println("Mapped:", mapped.Items()) // Output: [10 4 8 2 6]
 
 	// Test Filter
 	filtered := gs.Filter(func(i interface{}) bool {
@@ -35,4 +35,7 @@ func TestGenericSlice(t *testing.T) {
 		return acc.(int) + i.(int)
 	}, 0)
 	fmt.Println("MapReduced:", mapreduced) // Output: 30
+
+	gs.Sort()
+	fmt.Println("Sorted:", gs.items) // Output: [1 2 3 4 5]
 }
