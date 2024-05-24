@@ -7,6 +7,8 @@ A simple Go package providing generic `Map`, `Filter`, and `Reduce` functions fo
 - **Map**: Applies a function to each element in the collection.
 - **Filter**: Selects elements from the collection that satisfy a predicate function.
 - **Reduce**: Aggregates elements of the collection into a single value using a reducer function.
+- **ChainSort**: Sorts the collection in ascending order.
+- **Sort**: Sorts the collection in ascending order in place.
 
 ## Installation
 
@@ -77,7 +79,7 @@ func main() {
             return acc.(int) + i.(int)
         }, 0)
 
-    fmt.Println("Chained result:", result) // Output: 18
+    fmt.Println("Chained result:", result) // Output: 24
 }
 ```
 
@@ -88,10 +90,12 @@ In this example, the Map, Filter, and Reduce operations are chained together. Fi
 
 ```go
 type Collection interface {
-    Map(func(interface{}) interface{}) Collection
-    Filter(func(interface{}) bool) Collection
-    Reduce(func(interface{}, interface{}) interface{}, interface{}) interface{}
-    Items() []interface{}
+	Items() interface{}
+	Map(mapper func(interface{}) interface{}) Collection
+	Filter(filter func(interface{}) bool) Collection
+	Reduce(reducer func(interface{}, interface{}) interface{}, initial interface{}) interface{}
+	ChainSort() Collection
+	Sort()
 }
 ```
 
@@ -110,6 +114,12 @@ Filters the elements in the collection using the predicate function and returns 
 
 `func (s *GenericSlice) Reduce(reducer func(interface{}, interface{}) interface{}, initial interface{}) interface{}`
 Aggregates the elements in the collection using the reducer function and an initial value.
+
+`func (s *GenericSlice) ChainSort() Collection`
+Sorts the elements of the collection and returns a new `GenericSlice` with the sorted elements.
+
+`func (s *GenericSlice) Sort()`
+Sorts the elements of the collection in place.
 
 ## Running Tests
 

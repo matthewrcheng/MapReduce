@@ -12,6 +12,19 @@ func (s *GenericSlice) Items() interface{} {
 	return s.items
 }
 
+func Bubblesort(arr []interface{}) {
+	for i := 0; i < len(arr); i++ {
+		for j := 0; j < len(arr) - (i+1); j++ {
+			first := arr[j]
+			second := arr[j+1]
+			if less(first,second) {
+				arr[j] = second
+				arr[j+1] = first
+			}
+		}
+	}
+}
+
 func Mergesort(arr []interface{}) []interface{} {
 	if len(arr) <= 1 {
 		return arr
@@ -50,8 +63,13 @@ func merge(arr1 []interface{}, arr2 []interface{}) []interface{} {
 	return arr
 }
 
+func (s *GenericSlice) ChainSort() Collection {
+	items := Mergesort(s.items)
+	return &GenericSlice{items: items}
+}
+
 func (s *GenericSlice) Sort() {
-	s.items = Mergesort(s.items)
+	Bubblesort(s.items)
 }
 
 func (s *GenericSlice) Map(mapper func(interface{}) interface{}) Collection {

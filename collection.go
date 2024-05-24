@@ -5,4 +5,6 @@ type Collection interface {
 	Map(mapper func(interface{}) interface{}) Collection
 	Filter(filter func(interface{}) bool) Collection
 	Reduce(reducer func(interface{}, interface{}) interface{}, initial interface{}) interface{}
+	ChainSort() Collection
+	Sort()
 }
