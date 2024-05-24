@@ -13,18 +13,18 @@ A simple Go package providing generic `Map`, `Filter`, and `Reduce` functions fo
 To install the package, use the following command:
 
 ```sh
-go get github.com/matthewrcheng/mapreduce/collection
+go get github.com/matthewrcheng/mapreduce
 ```
 
 ## Usage
-Here is an example of how to use the collection package in your Go project:
+Here is an example of how to use the MapReduce package in your Go project:
 
 ```go
 package main
 
 import (
     "fmt"
-    "github.com/yourusername/yourrepo/collection"
+    "github.com/matthewrcheng/mapreduce"
 )
 
 func main() {
@@ -59,7 +59,7 @@ package main
 
 import (
     "fmt"
-    "github.com/yourusername/yourrepo/collection"
+    "github.com/matthewrcheng/mapreduce"
 )
 
 func main() {
@@ -116,11 +116,11 @@ Aggregates the elements in the collection using the reducer function and an init
 To run the tests for this package, navigate to the project directory and use the following command:
 
 ```sh
-go test ./collection
+go test .
 ```
 
 For more detailed output, you can use:
 
 ```sh
-go test -v ./collection
+go test -v .
 ```
