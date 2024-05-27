@@ -1,6 +1,6 @@
 # MapReduce Package
 
-A simple Go package providing generic `Map`, `Filter`, and `Reduce` functions for collections. This package is designed to work with collections of any type using the `interface{}` type, making it highly flexible and reusable.
+A simple Go package providing generic `Map`, `Filter`, and `Reduce` functions for collections. This package is designed to work with collections of any type using the `interface{}` type, making it highly flexible and reusable. 
 
 ## Features
 
@@ -83,6 +83,54 @@ func main() {
 }
 ```
 
+## Standalone Functions
+In addition to the collection methods, the package provides standalone Map, Filter, and Reduce functions. These can be used independently on slices of interface{}:
+```go
+package main
+
+import (
+    "fmt"
+    "github.com/matthewrcheng/mapreduce"
+)
+
+func Mapper(i interface{}) interface{} {
+    return i.(int) * 2
+}
+
+func Filterer(i interface{}) bool {
+    return i.(int)%2 == 0
+}
+
+func Reducer(i interface{}, j interface{}) interface{} {
+    return i.(int) + j.(int)
+}
+
+func main() {
+    arr := []interface{}{1, 2, 3, 4, 5}
+    fmt.Println("Original:", arr) 												   // Expected: [1 2 3 4 5]	    Actual: [1 2 3 4 5]
+    
+    mapped_arr := mapreduce.Map(Mapper, arr)
+    fmt.Println("Mapped:", mapped_arr)                                             // Expected: [2 4 6 8 10]	Actual: [2 4 6 8 10]
+    
+    filtered_arr := mapreduce.Filter(Filterer, arr)
+    fmt.Println("Filtered:", filtered_arr)                                         // Expected: [2 4]			Actual: [2 4]
+    
+    reduced_val := mapreduce.Reduce(Reducer, arr, 0)
+    fmt.Println("Reduced:", reduced_val)                                           // Expected: 15				Actual: 15
+    
+    reduced_new_arr := mapreduce.Reduce(Reducer, new_arr, 0)
+    fmt.Println("Reduced new_arr:", reduced_new_arr)                               // Expected: 30				Actual: 30
+    
+    filtered_new_arr := mapreduce.Filter(Filterer, new_arr)
+    reduced_filtered_new_arr := mapreduce.Reduce(Reducer, filtered_new_arr, 0)
+    fmt.Println("Reduced filtered new_arr:", reduced_filtered_new_arr)             // Expected: 30				Actual: 30
+    
+    chained_result := mapreduce.Reduce(Reducer, mapreduce.Map(Mapper, mapreduce.Filter(Filterer, arr)), 0)
+    fmt.Println("Chained result:", chained_result)                                 // Expected: 12				Actual: 12
+}
+
+```
+
 In this example, the Map, Filter, and Reduce operations are chained together. First, the Map function doubles each number, then the Filter function selects numbers greater than 4, and finally, the Reduce function sums the filtered numbers.
 
 ## API
@@ -121,6 +169,16 @@ Sorts the elements of the collection and returns a new `GenericSlice` with the s
 `func (s *GenericSlice) Sort()`
 Sorts the elements of the collection in place.
 
+### Standalone Functions
+`Map(mapper func(interface{}) interface{}, arr []interface{}) []interface{}`
+Applies a function to each element in the array and returns a new array with the results.
+
+`Filter(filterer func(interface{}) bool, arr []interface{}) []interface{}`
+Selects elements from the array that satisfy a predicate function and returns a new array with these elements.
+
+`Reduce(reducer func(interface{}, interface{}) interface{}, arr []interface{}, res interface{}) interface{}`
+Aggregates elements of the array into a single value using a reducer function.
+
 ## Running Tests
 
 To run the tests for this package, navigate to the project directory and use the following command:
@@ -134,3 +192,10 @@ For more detailed output, you can use:
 ```sh
 go test -v .
 ```
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request if you have any improvements or bug fixes.
+
+## License
+This project is licensed under the MIT License. See the LICENSE file for details.
